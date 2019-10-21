@@ -10,8 +10,8 @@ This template will get you ready to deploy an ILB ASE v2 (appserviceenvironment.
 - VM with the size of Standard_B4ms with 127 GB Standard HDD disk<br> and Windows Server 2019 image<br>
 - NIC for the VM<br>
 - NSG for the VM allowing ports 3389 and 80<br>
-- Public static IP for the VM so you can remotely connect ot it<br>
-The steps you need to take after this deployment are the following:<br>
+- Public static IP for the VM so you can remotely connect ot it<br><br>
+The steps you need to take after this deployment are the following:<br><br>
 - Either create a Private DNS Zone for your ASE domain (asename.appserviceenvironment.net) or Install DNS Server on the VM and create a zone there<br>
 - Create two records in that zone. One wildcard pointing to the ILB Address and another wildcard for the scm, again pointing to the ILB Address<br>
 - Create an App Service Plan (Isolated) by selecting the ASE as the plan's location<br>
