@@ -28,7 +28,7 @@ This template will deploy a VNET, VM, Private DNS Zone and an App Service Enviro
 - Public static IP for the VM so you can remotely connect ot it<br>
 - ILB ASE V2 (appserviceenvironment.net)<br>
 - Private DNS Zone covering the asename.appserviceenvironment.net domain<br><br>
-What you need to do after this deployment is:<br>
+What you need to do after this deployment is:<br><br>
 - Create two A records in that zone. One wildcard (*) pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
 - Create an App Service Plan (Isolated) by selecting the ASE as the plan's location<br>
 - Create a Web App</br></br>
