@@ -12,12 +12,12 @@ This template will get you ready to deploy an ILB ASE v2 (appserviceenvironment.
 - NSG for the VM allowing ports 3389 and 80<br>
 - Public static IP for the VM so you can remotely connect ot it<br><br>
 The steps you need to take after this deployment are the following:<br><br>
-- Either create a Private DNS Zone for your ASE domain (asename.appserviceenvironment.net) or Install DNS Server on the VM and create a zone there<br>
-- Create two records in that zone. One wildcard pointing to the ILB Address and another wildcard for the scm, again pointing to the ILB Address<br>
+- Either create a Private DNS Zone for your ASE domain (asename.appserviceenvironment.net) with a link to the VNET or Install DNS Server on the VM and create a zone there. Set the VNET Dns Servers as custom and to point to the VM's private IP<br>
+- Create two A records in that zone. One wildcard pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
 - Create an App Service Plan (Isolated) by selecting the ASE as the plan's location<br>
-- Create a Web App<br><br>
+- Create a Web App</br></br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-base-resources-lab.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
-</a><br>
+</a></br>
 ## Deploy a full ILB ASEv2 Environment lab
 This template will deploy a VNET, VM, Private DNS Zone and an App Service Environment V2 (appserviceenvironment.net). The only thing you need to do after that is configure your Private DNS Zone and deploy App Serivce Plan to get you going.<br>
 - VNET with a name ILB-ASE-VNET<br>
