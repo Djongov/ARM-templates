@@ -13,7 +13,7 @@ This template will get you ready to deploy an ILB ASE v2 (appserviceenvironment.
 - Public static IP for the VM so you can remotely connect ot it<br><br>
 The steps you need to take after this deployment are the following:<br><br>
 - Either create a Private DNS Zone for your ASE domain (asename.appserviceenvironment.net) with a link to the VNET or Install DNS Server on the VM and create a zone there. Set the VNET Dns Servers as custom and to point to the VM's private IP<br>
-- Create two A records in that zone. One wildcard pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
+- Create two A records in that zone. One wildcard (*) pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
 - Create an App Service Plan (Isolated) by selecting the ASE as the plan's location<br>
 - Create a Web App</br></br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-base-resources-lab.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
@@ -28,5 +28,9 @@ This template will deploy a VNET, VM, Private DNS Zone and an App Service Enviro
 - Public static IP for the VM so you can remotely connect ot it<br>
 - ILB ASE V2 (appserviceenvironment.net)<br>
 - Private DNS Zone covering the asename.appserviceenvironment.net domain<br><br>
+What you need to do after this deployment is:<br>
+- Create two A records in that zone. One wildcard (*) pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
+- Create an App Service Plan (Isolated) by selecting the ASE as the plan's location<br>
+- Create a Web App</br></br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
