@@ -57,6 +57,6 @@ Here is what is being deployed by the template:
 So you essentially get a completely configured and production ready App Service Environment.<br>
 Here is a diagram of the deployment:<br>
 <img src="https://www.azuretechguy.com/images/new_ase/ase-deployment-diagram.png"></img>
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment-customized.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
 
