@@ -143,7 +143,7 @@
   },
   "resources": [
     {
-      "name": "ILB-ASE-VNET",
+      "name": "[variables('VNET Name')]",
       "type": "Microsoft.Network/virtualNetworks",
       "location": "[resourceGroup().location]",
       "apiVersion": "2016-03-30",
