@@ -4,43 +4,57 @@
   "parameters": {
     "VM Admin User Name": {
       "type": "string",
-      "minLength": 1
+      "minLength": 3,
+      "metadata": {
+        "description": "Supply username for your VM admin"
+      }
     },
     "VM Admin Password": {
-      "type": "securestring"
+      "type": "securestring",
+      "minLength": 3,
+      "metadata": {
+        "description": "Supply password for your VM admin user"
+      }
     },
     "ASE Name": {
       "type": "string",
-      "minLength":  3
+      "minLength": 3,
+      "metadata": {
+        "description": "Name of your App Service Environment. It will be important for the ASE domain (asename.appserviceenvironment.net)"
+      }
     }
   },
   "variables": {
-    "ILB-ASE-VNETPrefix": "10.0.0.0/16",
-    "ILB-ASE-VNETSubnet1Name": "ILB-ASE-SUBNET",
-    "ILB-ASE-VNETSubnet1Prefix": "10.0.0.0/24",
-    "ILB-ASE-VNETSubnet2Name": "VM-SUBNET",
-    "ILB-ASE-VNETSubnet2Prefix": "10.0.1.0/24",
-    "STORAGE-ACCOUNT-NAME": "[concat('vm', uniqueString(resourceGroup().id))]",
-    "ILB-ASE-TESTVMName": "ILB-TEST-VM",
-    "ILB-ASE-TESTVMImagePublisher": "MicrosoftWindowsServer",
-    "ILB-ASE-TESTVMImageOffer": "WindowsServer",
-    "ILB-ASE-TESTVMOSDiskName": "ILB-ASE-TESTVMOSDisk",
-    "ILB-ASE-TESTVMVmSize": "Standard_B4ms",
-    "ILB-ASE-TESTVMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]",
-    "ILB-ASE-TESTVMSubnetRef": "[concat(variables('ILB-ASE-TESTVMVnetID'), '/subnets/', variables('ILB-ASE-VNETSubnet2Name'))]",
-    "ILB-ASE-TESTVMSubnetRef2": "[concat(variables('ILB-ASE-TESTVMVnetID'), '/subnets/', variables('ILB-ASE-VNETSubnet1Name'))]",
-    "ILB-ASE-TESTVMStorageAccountContainerName": "vhds",
-    "ILB-ASE-TESTVMNicName": "[concat(variables('ILB-ASE-TESTVMName'), 'NetworkInterface')]",
-    "ILB-ASE-TESTVM-IPName": "ILB-ASE-TESTVM-IP",
-    "VMWindowsOSVersion": "2019-Datacenter",
-    "VM-IP-NAme": "ILB-ASE-VM-IP",
-    "VM-NSG-NAME": "VM-NSG",
+    "VNET Name": "ILB-ASE-VNET",
+    "VM Subnet Name": "VM-Subnet",
+    "ASE Subnet Name": "ASE-Subnet",
+    "VNET Address space": "10.0.0.0/16",
+    "VM Subnet Address range": "10.0.0.0/24",
+    "ASE Subnet Address range": "10.0.1.0/24",
+    "STORAGE-ACCOUNT-NAME": "[concat('vmstorage', uniqueString(resourceGroup().id))]",
     "STORAGE-ACCOUNT-SKU": "Standard_LRS",
+    "VM Name": "ILB-TEST-VM",
+    "VM Size": "Standard_B4ms",
+    "VM OS Version": "2019-Datacenter",
+    "VMImagePublisher": "MicrosoftWindowsServer",
+    "VMImageOffer": "WindowsServer",
+    "VMOSDiskName": "[concat(variables('VM Name'), 'OSDisk')]",
+    "VMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', variables('VNET Name'))]",
+    "VMSubnetRef": "[concat(variables('VMVnetID'), '/subnets/', variables('VM Subnet Name'))]",
+    "ASESubnetRef": "[concat(variables('VMVnetID'), '/subnets/', variables('ASE Subnet Name'))]",
+    "VMStorageAccountContainerName": "vhds",
+    "VMNicName": "[concat(variables('VM Name'), '-NetworkInterface')]",
+    "VM-IPName": "[concat(variables('VM Name'), '-IP')]",
+    "VM-NSG-NAME": "[concat(variables('VM Name'), '-NSG')]",
     "ilbMode": "3",
     "newZoneName": "[concat(parameters('ASE Name'), '.appserviceenvironment.net')]",
     "newRecordName": "*",
     "newRecordName2": "*.scm",
-    "vnetlinkname": "vnetlink"
+    "vnetlinkname": "vnetlink",
+    "App Service Plan Name": "ILB-ASE-ASP",
+    "App Service Plan Tier": "1",
+    "App Service Capacity": "1",
+    "Web App Name": "webapp-test"
   },
   "resources": [
     {
@@ -55,20 +69,20 @@
       "properties": {
         "addressSpace": {
           "addressPrefixes": [
-            "[variables('ILB-ASE-VNETPrefix')]"
+            "[variables('VNET Address space')]"
           ]
         },
         "subnets": [
           {
-            "name": "[variables('ILB-ASE-VNETSubnet1Name')]",
+            "name": "[variables('VM Subnet Name')]",
             "properties": {
-              "addressPrefix": "[variables('ILB-ASE-VNETSubnet1Prefix')]"
+              "addressPrefix": "[variables('VM Subnet Address range')]"
             }
           },
           {
-            "name": "[variables('ILB-ASE-VNETSubnet2Name')]",
+            "name": "[variables('ASE Subnet Name')]",
             "properties": {
-              "addressPrefix": "[variables('ILB-ASE-VNETSubnet2Prefix')]"
+              "addressPrefix": "[variables('ASE Subnet Address range')]"
             }
           }
         ]
@@ -94,20 +108,6 @@
               "priority": 100,
               "direction": "Inbound"
             }
-          },
-          {
-            "name": "web_rule",
-            "properties": {
-              "description": "Allow WEB",
-              "protocol": "Tcp",
-              "sourcePortRange": "*",
-              "destinationPortRange": "80",
-              "sourceAddressPrefix": "Internet",
-              "destinationAddressPrefix": "*",
-              "access": "Allow",
-              "priority": 101,
-              "direction": "Inbound"
-            }
           }
         ]
       }
@@ -122,21 +122,21 @@
       },
       "dependsOn": [],
       "tags": {
-        "displayName": "ILB ASE LAB"
+        "displayName": "ILB ASE Environment"
       },
       "kind": "Storage"
     },
     {
-      "name": "[variables('ILB-ASE-TESTVMNicName')]",
+      "name": "[variables('VMNicName')]",
       "type": "Microsoft.Network/networkInterfaces",
       "location": "[resourceGroup().location]",
       "apiVersion": "2016-03-30",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]",
-        "[resourceId('Microsoft.Network/publicIPAddresses', variables('ILB-ASE-TESTVM-IPName'))]"
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('VNET Name'))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('VM-IPName'))]"
       ],
       "tags": {
-        "displayName": "ILB ASE LAB"
+        "displayName": "ILB ASE Environment"
       },
       "properties": {
         "ipConfigurations": [
@@ -145,10 +145,10 @@
             "properties": {
               "privateIPAllocationMethod": "Dynamic",
               "subnet": {
-                "id": "[variables('ILB-ASE-TESTVMSubnetRef')]"
+                "id": "[variables('VMSubnetRef')]"
               },
               "publicIPAddress": {
-                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('ILB-ASE-TESTVM-IPName'))]"
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('VM-IPName'))]"
               }
             }
           }
@@ -159,37 +159,37 @@
       }
     },
     {
-      "name": "[variables('ILB-ASE-TESTVMName')]",
+      "name": "[variables('VM Name')]",
       "type": "Microsoft.Compute/virtualMachines",
       "location": "[resourceGroup().location]",
       "apiVersion": "2015-06-15",
       "dependsOn": [
         "[resourceId('Microsoft.Storage/storageAccounts', variables('STORAGE-ACCOUNT-NAME'))]",
-        "[resourceId('Microsoft.Network/networkInterfaces', variables('ILB-ASE-TESTVMNicName'))]"
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('VMNicName'))]"
       ],
       "tags": {
-        "displayName": "ILB ASE LAB"
+        "displayName": "ILB ASE Environment"
       },
       "properties": {
         "hardwareProfile": {
-          "vmSize": "[variables('ILB-ASE-TESTVMVmSize')]"
+          "vmSize": "[variables('VM Size')]"
         },
         "osProfile": {
-          "computerName": "[variables('ILB-ASE-TESTVMName')]",
+          "computerName": "[variables('VNET Name')]",
           "adminUsername": "[parameters('VM Admin User Name')]",
           "adminPassword": "[parameters('VM Admin Password')]"
         },
         "storageProfile": {
           "imageReference": {
-            "publisher": "[variables('ILB-ASE-TESTVMImagePublisher')]",
-            "offer": "[variables('ILB-ASE-TESTVMImageOffer')]",
-            "sku": "[variables('VMWindowsOSVersion')]",
+            "publisher": "[variables('VMImagePublisher')]",
+            "offer": "[variables('VMImageOffer')]",
+            "sku": "[variables('VM OS Version')]",
             "version": "latest"
           },
           "osDisk": {
-            "name": "ILB-ASE-TESTVMOSDisk",
+            "name": "[variables('VMOSDiskName')]",
             "vhd": {
-              "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('STORAGE-ACCOUNT-NAME')), '2016-01-01').primaryEndpoints.blob, variables('ILB-ASE-TESTVMStorageAccountContainerName'), '/', variables('ILB-ASE-TESTVMOSDiskName'), '.vhd')]"
+              "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('STORAGE-ACCOUNT-NAME')), '2016-01-01').primaryEndpoints.blob, variables('VMStorageAccountContainerName'), '/', variables('VMOSDiskName'), '.vhd')]"
             },
             "caching": "ReadWrite",
             "createOption": "FromImage"
@@ -199,20 +199,20 @@
         "networkProfile": {
           "networkInterfaces": [
             {
-              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('ILB-ASE-TESTVMNicName'))]"
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('VMNicName'))]"
             }
           ]
         }
       }
     },
     {
-      "name": "[variables('ILB-ASE-TESTVM-IPName')]",
+      "name": "[variables('VM-IPName')]",
       "type": "Microsoft.Network/publicIPAddresses",
       "location": "[resourceGroup().location]",
       "apiVersion": "2016-03-30",
       "dependsOn": [],
       "tags": {
-        "displayName": "ILB ASE LAB"
+        "displayName": "ILB ASE Environment"
       },
       "properties": {
         "publicIPAllocationMethod": "Static"
@@ -225,18 +225,18 @@
       "kind": "ASEV2",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]"
+        "[resourceId('Microsoft.Network/virtualNetworks', variables('VNET Name'))]"
       ],
       "properties": {
         "name": "[parameters('ASE Name')]",
         "location": "[resourceGroup().location]",
         "InternalLoadBalancingMode": "[variables('ilbMode')]",
         "virtualNetwork": {
-          "Id": "[variables('ILB-ASE-TESTVMSubnetRef2')]"
+          "Id": "[variables('ASESubnetRef')]"
         }
       },
       "tags": {
-        "displayName": "ILB ASE LAB"
+        "displayName": "ILB ASE Environment"
       }
     },
     {
@@ -296,10 +296,48 @@
       ],
       "properties": {
         "virtualNetwork": {
-          "id": "[variables('ILB-ASE-TESTVMVnetID')]"
+          "id": "[variables('VMVnetID')]"
         },
         "registrationEnabled": "false"
       }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('App Service Plan Name')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/hostingEnvironments',parameters('ASE Name'))]"
+      ],
+      "properties": {
+        "name": "[variables('App Service Plan Name')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',parameters('ASE Name'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',variables('App Service Plan Tier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',variables('App Service Plan Tier'))]",
+        "family": "I",
+        "capacity": "[variables('App Service Capacity')]"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[variables('Web App Name')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[variables('Web App Name')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',variables('App Service Plan Name'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('ASE Name'))]"
+        }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/',variables('App Service Plan Name'))]"
+      ]
     }
   ],
   "outputs": {}
