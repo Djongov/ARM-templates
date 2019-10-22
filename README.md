@@ -19,7 +19,7 @@ The steps you need to take after this deployment are the following:<br><br>
 - Create a Web App</br></br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-base-resources-lab.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a></br>
-## Deploy a full ILB ASEv2 Environment - Little custommization
+## Deploy a full ILB ASEv2 Environment - Little customization
 This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan and a Web App. The template also uses a minimal ammount of customization and the template takes care of the naming for most resrouces. Good for Lab deployments. If you need more customization use the other template.<br>
 - VNET with a name ILB-ASE-VNET and Address space of 10.0.0.0/16<br>
 - 2 Subnets called "VM-Subnet" with prefix 10.0.0.0/24 and another subnet called "ASE-SUBNET" with prefix 10.0.1.0/24<br>
@@ -38,7 +38,7 @@ This is a diagram of what will be deployed:<br>
 <img src="https://www.azuretechguy.com/images/new_ase/ase-deployment-diagram-no-asp.png"></img><br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
-## Deploy a full ILB ASEv2 Environment - Full custommization
+## Deploy a full ILB ASEv2 Environment - Full customization
 This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan and a Web app. This represents the entire solution. This version is fully customized which means that it will ask you to name your resouces. Good for production environments.<br>
 Here is what is being deployed by the template:
 - VNET with Address space of 10.0.0.0/16<br>
