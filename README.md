@@ -38,7 +38,7 @@ This basically deploys the entire solution with minimal customization
 </a><br>
 This is a diagram of what will be deployed<br>
 ## Deploy a full ILB ASEv2 Environment - Full custommization
-This template will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan and a Web app. This represents the entire solution. This version is fully customized which means that it will ask you to name your resouces. Good for production environments.<br>
+This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan and a Web app. This represents the entire solution. This version is fully customized which means that it will ask you to name your resouces. Good for production environments.<br>
 Here is what is being deployed by the template:
 - VNET with Address space of 10.0.0.0/16<br>
 - 2 Subnets. 1 that will host the VM with prefix 10.0.0.0/24 and another one with prefix 10.0.1.0/24 that will host the ASE<br>
