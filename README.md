@@ -20,7 +20,7 @@ The steps you need to take after this deployment are the following:<br><br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-base-resources-lab.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a></br>
 ## Deploy a full ILB ASEv2 Environment - Little custommization
-This template will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan and a Web App. The template also uses a minimal ammount of customization and the template takes care of the naming for most resrouces. Good for Lab deployments. If you need more customization use the other template.<br>
+This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan and a Web App. The template also uses a minimal ammount of customization and the template takes care of the naming for most resrouces. Good for Lab deployments. If you need more customization use the other template.<br>
 - VNET with a name ILB-ASE-VNET and Address space of 10.0.0.0/16<br>
 - 2 Subnets called "VM-Subnet" with prefix 10.0.0.0/24 and another subnet called "ASE-SUBNET" with prefix 10.0.1.0/24<br>
 - VM with the size of Standard_B4ms with 127 GB Standard HDD disk<br> and Windows Server 2019 image.<br>
@@ -33,7 +33,7 @@ This template will deploy a VNET, VM, Private DNS Zone, an App Service Environme
 - Two A records in that zone. One wildcard (*) pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
 - An App Service Plan called "ILB-ASE-ASP" in isolated 1 tier (I1) wiht 1 worker<br>
 - A Web App called webapp-test<br><br>
-This basically deploys the entire solution with minimal customization<br>
+This basically deploys the entire solution with minimal customization. In the end you will have a completely working and configured ILB ASEv2 environment.<br>
 This is a diagram of what will be deployed:<br>
 <img src="https://www.azuretechguy.com/images/new_ase/ase-deployment-diagram-no-asp.png"></img><br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
@@ -53,8 +53,8 @@ Here is what is being deployed by the template:
 - Two A records in that zone. One wildcard (*) pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
 - App Service Plan in Isolated tier directly deployed into the ASE<br>
 - A Web App hosted in this App Service Plan<br><br>
-So you essentially get a completely configured and production ready App Service Environment.<br>
-Here is a diagram of the deployment:<br>
+This basically deploys the entire solution with your own customization. In the end you will have a completely working and configured ILB ASEv2 environment. The only thing that you don't have control over is the address space of the VNET. If you want to change it, feel free to edit it out in the template, just don't forget to change the address space on the A records in the Private DNS Zone too.<br>
+This is a diagram of what will be deployed:<br>
 <img src="https://www.azuretechguy.com/images/new_ase/ase-deployment-diagram.png"></img>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment-customized.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
