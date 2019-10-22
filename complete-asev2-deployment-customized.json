@@ -310,7 +310,7 @@
       "kind": "ASEV2",
       "location": "[resourceGroup().location]",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]"
+       "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]"
       ],
       "properties": {
         "name": "[parameters('ASE Name')]",
