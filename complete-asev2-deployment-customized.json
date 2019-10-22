@@ -330,7 +330,7 @@
       "apiVersion": "2018-09-01",
       "location": "global",
       "dependsOn": [
-        "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]"
+       "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]"
       ],
       "properties": {}
     },
