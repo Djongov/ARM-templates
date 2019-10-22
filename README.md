@@ -33,7 +33,7 @@ This template will deploy a VNET, VM, Private DNS Zone, an App Service Environme
 - Two A records in that zone. One wildcard (*) pointing to the ILB Address and another wildcard for the scm (in the format of *.scm), again pointing to the ILB Address<br>
 - An App Service Plan called "ILB-ASE-ASP" in isolated 1 tier (I1) wiht 1 worker<br>
 - A Web App called webapp-test<br><br>
-This basically deploys the entire solution with minimal customization
+This basically deploys the entire solution with minimal customization<br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
 This is a diagram of what will be deployed<br>
