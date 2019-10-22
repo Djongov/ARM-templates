@@ -34,9 +34,10 @@ This template will deploy a VNET, VM, Private DNS Zone, an App Service Environme
 - An App Service Plan called "ILB-ASE-ASP" in isolated 1 tier (I1) wiht 1 worker<br>
 - A Web App called webapp-test<br><br>
 This basically deploys the entire solution with minimal customization<br>
+This is a diagram of what will be deployed:<br>
+<img src="https://www.azuretechguy.com/images/new_ase/ase-deployment-diagram-no-asp.png"></img><br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
-This is a diagram of what will be deployed<br>
 ## Deploy a full ILB ASEv2 Environment - Full custommization
 This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan and a Web app. This represents the entire solution. This version is fully customized which means that it will ask you to name your resouces. Good for production environments.<br>
 Here is what is being deployed by the template:
