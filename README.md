@@ -22,7 +22,7 @@ The steps you need to take after this deployment are the following:<br><br>
 ## Deploy a full ILB ASEv2 Environment - Little customization
 This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan (Windows) and a Web App. The template also uses a minimal ammount of customization and the template takes care of the naming for most resrouces. Good for Lab deployments. If you need more customization use the other template.<br>
 - VNET with a name ILB-ASE-VNET and Address space of 10.0.0.0/16<br>
-- 2 Subnets called "VM-Subnet" with prefix 10.0.0.0/24 and another subnet called "ASE-SUBNET" with prefix 10.0.1.0/24<br>
+- 2 Subnets called "VM-Subnet" with prefix 10.0.1.0/24 and another subnet called "ASE-SUBNET" with prefix 10.0.0.0/24<br>
 - VM with the size of Standard_B4ms with 127 GB Standard HDD disk<br> and Windows Server 2019 image.<br>
 - NIC for the VM<br>
 - NSG for the VM allowing ports 3389<br>
@@ -42,7 +42,7 @@ This is a diagram of what will be deployed:<br>
 This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, an App Service Environment V2 (appserviceenvironment.net), App Service Plan (Windows) and a Web app. This represents the entire solution. This version is fully customized which means that it will ask you to name your resouces. Good for production environments.<br>
 Here is what is being deployed by the template:
 - VNET with Address space of 10.0.0.0/16<br>
-- 2 Subnets. 1 that will host the VM with prefix 10.0.0.0/24 and another one with prefix 10.0.1.0/24 that will host the ASE<br>
+- 2 Subnets. 1 that will host the VM with prefix 10.0.1.0/24 and another one with prefix 10.0.0.0/24 that will host the ASE<br>
 - Virtual Machine to access the ASE<br>
 - NIC for the VM<br>
 - NSG for the VM allowing ports 3389<br>
