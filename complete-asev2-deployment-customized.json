@@ -139,8 +139,7 @@
     "newZoneName": "[concat(parameters('ASE Name'), '.appserviceenvironment.net')]",
     "newRecordName": "*",
     "newRecordName2": "*.scm",
-    "vnetlinkname": "vnetlink",
-    "ILBAddress": "\"[concat('ASE Subnet Address range'), '11'"
+    "vnetlinkname": "vnetlink"
   },
   "resources": [
     {
