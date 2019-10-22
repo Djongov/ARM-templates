@@ -36,7 +36,11 @@
     "VM-IP-NAme": "ILB-ASE-VM-IP",
     "VM-NSG-NAME": "VM-NSG",
     "STORAGE-ACCOUNT-SKU": "Standard_LRS",
-    "ilbMode": "int"
+    "ilbMode": "3",
+    "newZoneName": "[concat(parameters('ASE Name'), '.appserviceenvironment.net')]",
+    "newRecordName": "*",
+    "newRecordName2": "*.scm",
+    "vnetlinkname": "vnetlink"
   },
   "resources": [
     {
@@ -233,6 +237,68 @@
       },
       "tags": {
         "displayName": "ILB ASE LAB"
+      }
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones",
+      "name": "[variables('newZoneName')]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('newZoneName'), '/', variables('newRecordName'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('newZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('newZoneName'), '/', variables('newRecordName2'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('newZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "name": "[concat(variables('newZoneName'), '/', variables('vnetlinkname'))]",
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2018-09-01",
+      "tags": {},
+      "location": "global",
+      "dependsOn": [
+        "[variables('newZoneName')]"
+      ],
+      "properties": {
+        "virtualNetwork": {
+          "id": "[variables('ILB-ASE-TESTVMVnetID')]"
+        },
+        "registrationEnabled": "false"
       }
     }
   ],
