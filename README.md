@@ -19,7 +19,7 @@ The steps you need to take after this deployment are the following:<br><br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-base-resources-lab.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a></br>
 ## Deploy a full ILB ASEv2 Environment lab
-This template will deploy a VNET, VM, Private DNS Zone and an App Service Environment V2 (appserviceenvironment.net). The only thing you need to do after that is configure your Private DNS Zone and deploy App Serivce Plan to get you going.<br>
+This template will deploy a VNET, VM, Private DNS Zone and an App Service Environment V2 (appserviceenvironment.net). The only thing you need to do after that is just start using your ASE by deploying an App Service plan and Web Apps afterwards.<br>
 - VNET with a name ILB-ASE-VNET<br>
 2 Subnets called "ILB-ASE-SUBNET" with prefix 10.0.0.0.24 and another subnet called "VM-SUBNET" with prefix 10.0.1.0/24<br>
 - VM with the size of Standard_B4ms with 127 GB Standard HDD disk<br> and Windows Server 2019 image.<br>
