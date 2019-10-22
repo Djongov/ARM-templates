@@ -1,0 +1,430 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "VM Name": {
+      "type": "string",
+      "metadata": {
+        "description": "Name for your VM"
+      }
+    },
+    "VM Size": {
+      "type": "string",
+      "metadata": {
+        "description": "Size of the VM. Read more at https://docs.microsoft.com/en-us/azure/virtual-machines/windows/sizes"
+      },
+      "allowedValues": [
+        "Standard_B2s",
+        "Standard_B2ms",
+        "Standard_B4ms",
+        "Standard_DS1_v2",
+        "Standard_DS2_v2",
+        "Standard_DS3_v2",
+        "Standard_D2s_v3",
+        "Standard_D4s_v3",
+        "Standard_D8s_v3",
+        "Standard_D2_v3",
+        "Standard_D4_v3",
+        "Standard_A4_v2",
+        "Standard_A8_v2"
+      ],
+      "defaultValue": "Standard_B4ms"
+    },
+    "VM OS Version": {
+      "type": "string",
+      "metadata": {
+        "description": "VM OS image"
+      },
+      "allowedValues": [
+        "2019-Datacenter",
+        "2016-Datacenter",
+        "2012-R2-Datacenter"
+      ],
+      "defaultValue": "2019-Datacenter"
+    },
+    "VM Admin User Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Supply username for your VM admin"
+      }
+    },
+    "VM Admin Password": {
+      "type": "securestring",
+      "minLength": 3,
+      "metadata": {
+        "description": "Supply password for your VM admin user"
+      }
+    },
+    "VNET Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name your VNET"
+      }
+    },
+    "VM Subnet Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name the subnet where the VM will be deployed"
+      }
+    },
+    "ASE Subnet Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name the subnet where the ASE will be deployed"
+      }
+    },
+    "ASE Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name of your App Service Environment. It will be important for the ASE domain (asename.appserviceenvironment.net)"
+      }
+    },
+    "App Service Plan Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name of your App Service plan that will be deployed to the ASE"
+      }
+    },
+    "App Service Plan Tier": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Defines the pricing tier: 1 = Isolated 1 (I1), 2 = Isolated 2 (I2), 3 = Isolated 3 (I3)."
+      },
+      "allowedValues": [
+        "1",
+        "2",
+        "3"
+      ],
+      "defaultValue": "1"
+    },
+    "App Service Capacity": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Shows how many instances of this App Service plan you want. Scale out workers"
+      }
+    },
+    "Wep App Name": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Name of your Web App that will be created under your App Service Plan in the ASE"
+      }
+    }
+  },
+  "variables": {
+    "VNET Address space": "10.0.0.0/16",
+    "VM Subnet Address range": "10.0.0.0/24",
+    "ASE Subnet Address range": "10.0.1.0/24",
+    "STORAGE-ACCOUNT-NAME": "[concat('vmstorage', uniqueString(resourceGroup().id))]",
+    "STORAGE-ACCOUNT-SKU": "Standard_LRS",
+    "VMImagePublisher": "MicrosoftWindowsServer",
+    "VMImageOffer": "WindowsServer",
+    "VMOSDiskName": "[concat(parameters('VM Name'), 'OSDisk')]",
+    "VMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]",
+    "VMSubnetRef": "[concat(variables('VMVnetID'), '/subnets/', parameters('VM Subnet Name'))]",
+    "ASESubnetRef": "[concat(variables('VMVnetID'), '/subnets/', parameters('ASE Subnet Name'))]",
+    "VMStorageAccountContainerName": "vhds",
+    "VMNicName": "[concat(parameters('VM Name'), '-NetworkInterface')]",
+    "VM-IPName": "[concat(parameters('VM Name'), '-IP')]",
+    "VM-NSG-NAME": "[concat(parameters('VM Name'), '-NSG')]",
+    "ilbMode": "3",
+    "newZoneName": "[concat(parameters('ASE Name'), '.appserviceenvironment.net')]",
+    "newRecordName": "*",
+    "newRecordName2": "*.scm",
+    "vnetlinkname": "vnetlink",
+    "ILBAddress": "\"[concat('ASE Subnet Address range'), '11'"
+  },
+  "resources": [
+    {
+      "name": "ILB-ASE-VNET",
+      "type": "Microsoft.Network/virtualNetworks",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "ILB ASE LAB"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('VNET Address space')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('VM Subnet Name')]",
+            "properties": {
+              "addressPrefix": "[variables('VM Subnet Address range')]"
+            }
+          },
+          {
+            "name": "[parameters('ASE Subnet Name')]",
+            "properties": {
+              "addressPrefix": "[variables('ASE Subnet Address range')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Network/networkSecurityGroups",
+      "name": "[variables('VM-NSG-NAME')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "securityRules": [
+          {
+            "name": "rdp_rule",
+            "properties": {
+              "description": "Allow RDP",
+              "protocol": "Tcp",
+              "sourcePortRange": "*",
+              "destinationPortRange": "3389",
+              "sourceAddressPrefix": "Internet",
+              "destinationAddressPrefix": "*",
+              "access": "Allow",
+              "priority": 100,
+              "direction": "Inbound"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "[variables('STORAGE-ACCOUNT-NAME')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-01-01",
+      "sku": {
+        "name": "[variables('STORAGE-ACCOUNT-SKU')]"
+      },
+      "dependsOn": [],
+      "tags": {
+        "displayName": "ILB ASE Environment"
+      },
+      "kind": "Storage"
+    },
+    {
+      "name": "[variables('VMNicName')]",
+      "type": "Microsoft.Network/networkInterfaces",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]",
+        "[resourceId('Microsoft.Network/publicIPAddresses', variables('VM-IPName'))]"
+      ],
+      "tags": {
+        "displayName": "ILB ASE Environment"
+      },
+      "properties": {
+        "ipConfigurations": [
+          {
+            "name": "ipconfig1",
+            "properties": {
+              "privateIPAllocationMethod": "Dynamic",
+              "subnet": {
+                "id": "[variables('VMSubnetRef')]"
+              },
+              "publicIPAddress": {
+                "id": "[resourceId('Microsoft.Network/publicIPAddresses', variables('VM-IPName'))]"
+              }
+            }
+          }
+        ],
+        "networkSecurityGroup": {
+          "id": "[resourceId('Microsoft.Network/networkSecurityGroups',variables('VM-NSG-NAME'))]"
+        }
+      }
+    },
+    {
+      "name": "[parameters('VM Name')]",
+      "type": "Microsoft.Compute/virtualMachines",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2015-06-15",
+      "dependsOn": [
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('STORAGE-ACCOUNT-NAME'))]",
+        "[resourceId('Microsoft.Network/networkInterfaces', variables('VMNicName'))]"
+      ],
+      "tags": {
+        "displayName": "ILB ASE Environment"
+      },
+      "properties": {
+        "hardwareProfile": {
+          "vmSize": "[parameters('VM Size')]"
+        },
+        "osProfile": {
+          "computerName": "[parameters('VNET Name')]",
+          "adminUsername": "[parameters('VM Admin User Name')]",
+          "adminPassword": "[parameters('VM Admin Password')]"
+        },
+        "storageProfile": {
+          "imageReference": {
+            "publisher": "[variables('VMImagePublisher')]",
+            "offer": "[variables('VMImageOffer')]",
+            "sku": "[parameters('VM OS Version')]",
+            "version": "latest"
+          },
+          "osDisk": {
+            "name": "[variables('VMOSDiskName')]",
+            "vhd": {
+              "uri": "[concat(reference(resourceId('Microsoft.Storage/storageAccounts', variables('STORAGE-ACCOUNT-NAME')), '2016-01-01').primaryEndpoints.blob, variables('VMStorageAccountContainerName'), '/', variables('VMOSDiskName'), '.vhd')]"
+            },
+            "caching": "ReadWrite",
+            "createOption": "FromImage"
+          }
+        },
+
+        "networkProfile": {
+          "networkInterfaces": [
+            {
+              "id": "[resourceId('Microsoft.Network/networkInterfaces', variables('VMNicName'))]"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "[variables('VM-IPName')]",
+      "type": "Microsoft.Network/publicIPAddresses",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "ILB ASE Environment"
+      },
+      "properties": {
+        "publicIPAllocationMethod": "Static"
+      }
+    },
+    {
+      "apiVersion": "2019-02-01",
+      "type": "Microsoft.Web/hostingEnvironments",
+      "name": "[parameters('ASE Name')]",
+      "kind": "ASEV2",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]"
+      ],
+      "properties": {
+        "name": "[parameters('ASE Name')]",
+        "location": "[resourceGroup().location]",
+        "InternalLoadBalancingMode": "[variables('ilbMode')]",
+        "virtualNetwork": {
+          "Id": "[variables('ASESubnetRef')]"
+        }
+      },
+      "tags": {
+        "displayName": "ILB ASE Environment"
+      }
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones",
+      "name": "[variables('newZoneName')]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[resourceId('Microsoft.Network/virtualNetworks', 'ILB-ASE-VNET')]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('newZoneName'), '/', variables('newRecordName'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('newZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('newZoneName'), '/', variables('newRecordName2'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('newZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "name": "[concat(variables('newZoneName'), '/', variables('vnetlinkname'))]",
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2018-09-01",
+      "tags": {},
+      "location": "global",
+      "dependsOn": [
+        "[variables('newZoneName')]"
+      ],
+      "properties": {
+        "virtualNetwork": {
+          "id": "[variables('VMVnetID')]"
+        },
+        "registrationEnabled": "false"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('App Service Plan Name')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/hostingEnvironments',parameters('ASE Name'))]"
+      ],
+      "properties": {
+        "name": "[parameters('App Service Plan Name')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',parameters('ASE Name'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',parameters('App Service Plan Tier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',parameters('App Service Plan Tier'))]",
+        "family": "I",
+        "capacity": "[parameters('App Service Capacity')]"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('Wep App Name')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[parameters('Wep App Name')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',parameters('App Service Plan Name'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('ASE Name'))]"
+        }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/',parameters('App Service Plan Name'))]"
+      ]
+    }
+  ],
+  "outputs": {}
+}
