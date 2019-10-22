@@ -46,7 +46,7 @@ Here is what is being deployed by the template:
 - Virtual Machine to access the ASE<br>
 - NIC for the VM<br>
 - NSG for the VM allowing ports 3389<br>
-- Public static IP for the VM so you can remotely connect ot it<br>
+- Public static IP for the VM so you can remotely connect to it<br>
 - ILB ASE V2 (appserviceenvironment.net)<br>
 - Private DNS Zone covering the asename.appserviceenvironment.net domain<br>
 - Virtual network link in the Private DNS Zone to the VNET<br>
