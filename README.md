@@ -38,4 +38,4 @@ What you need to do after this deployment is basically just start using the ASE:
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
 This is a diagram of what will be deployed<br>
-<img src="https://www.azuretechguy.com/images/new_ase/ase-deployment-diagram.png"></img>
+<img src="https://www.azuretechguy.com/images/new_ase/ase-deployment-diagram-no-asp.png"></img>
