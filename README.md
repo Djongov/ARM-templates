@@ -3,6 +3,12 @@
 This template will depoy a simple Private DNS Zone<br><br>
 <a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fprivatednszone.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
+# Deploy Joomla Web App with MySQL in App
+The template will deploy an [App service](https://docs.microsoft.com/azure/app-service/) Web App (Windows) in a new or existing App Service Plan (Windows) with [MySQL in App](https://github.com/projectkudu/kudu/wiki/MySQL-in-app/) enabled.<br>
+If you want to deploy in existing App Service Plan instead of a new one, just type the name of your existing App Service Plan and match the SKU<br>
+The template will also pull all the necessary Joomla files into the root directory. Note that pulling those files from the source repository might take up to 30 minutes.
+<br><br><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FWeb-App-Joomla-ARM%2Fmaster%2Fazuredeploy.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
+</a><br>
 ## ILB App Service Environment v2 Lab - Deploy the basic requirements + a VM to test it
 This template will get you ready to deploy an ILB ASE v2 (appserviceenvironment.net) and start practicing/using it. The template will deploy you a VNET and a VM so you can later access the ILB ASE websites. This is good if you want to deploy and configure the ASE yourself and deploy the App Serivce Plan and Web Apps on your own. In details the following will be deployed:<br>
 - VNET with a name ILB-ASE-VNET<br>
