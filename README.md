@@ -6,7 +6,9 @@ This template will depoy a simple Private DNS Zone<br><br>
 # Deploy Joomla Web App with MySQL in App
 The template will deploy an [App service](https://docs.microsoft.com/azure/app-service/) Web App (Windows) in a new or existing App Service Plan (Windows) with [MySQL in App](https://github.com/projectkudu/kudu/wiki/MySQL-in-app/) enabled.<br>
 If you want to deploy in existing App Service Plan instead of a new one, just type the name of your existing App Service Plan and match the SKU<br>
-The template will also pull all the necessary Joomla files into the root directory. Note that pulling those files from the source repository might take up to 30 minutes.
+The template will also pull all the necessary Joomla files into the root directory. Note that pulling those files from the source repository might take up to 30 minutes.<br>
+Use this article to get you started on using MySQL-in-App feature with your Joomla, if you plan on using the local MySQL for your Joomla installation.<br>
+https://github.com/projectkudu/kudu/wiki/MySQL-in-app
 <br><br><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fjoomla-webapp-mysqlinapp.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
 ## ILB App Service Environment v2 Lab - Deploy the basic requirements + a VM to test it
