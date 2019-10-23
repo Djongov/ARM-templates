@@ -9,13 +9,6 @@
         "description": "Name your VNET"
       }
     },
-    "VM Subnet Name": {
-      "type": "string",
-      "minLength": 3,
-      "metadata": {
-        "description": "Name the subnet where the VM will be deployed"
-      }
-    },
     "ASE Subnet Name": {
       "type": "string",
       "minLength": 3,
@@ -67,10 +60,8 @@
   },
   "variables": {
     "VNET Address space": "10.0.0.0/16",
-    "VM Subnet Address range": "10.0.1.0/24",
     "ASE Subnet Address range": "10.0.0.0/24",
     "VMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]",
-    "VMSubnetRef": "[concat(variables('VMVnetID'), '/subnets/', parameters('VM Subnet Name'))]",
     "ASESubnetRef": "[concat(variables('VMVnetID'), '/subnets/', parameters('ASE Subnet Name'))]",
     "ilbMode": "3",
     "newZoneName": "[concat(parameters('ASE Name'), '.appserviceenvironment.net')]",
@@ -95,12 +86,6 @@
           ]
         },
         "subnets": [
-          {
-            "name": "[parameters('VM Subnet Name')]",
-            "properties": {
-              "addressPrefix": "[variables('VM Subnet Address range')]"
-            }
-          },
           {
             "name": "[parameters('ASE Subnet Name')]",
             "properties": {
