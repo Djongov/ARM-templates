@@ -11,7 +11,7 @@ Use this article to get you started on using MySQL-in-App feature with your Joom
 https://github.com/projectkudu/kudu/wiki/MySQL-in-app
 <br><br><a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fjoomla-webapp-mysqlinapp.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
-## ILB App Service Environment v2 Lab - Deploy the basic requirements + a VM to test it
+## ILB App Service Environment v2 Lab - Deploy the basic requirements for an ASEv2 + a VM to test it (will not deploy ASE)
 This template will get you ready to deploy an ILB ASE v2 (appserviceenvironment.net) and start practicing/using it. The template will deploy you a VNET and a VM so you can later access the ILB ASE websites. This is good if you want to deploy and configure the ASE yourself and deploy the App Serivce Plan and Web Apps on your own. In details the following will be deployed:<br>
 - VNET with a name ILB-ASE-VNET<br>
 2 Subnets called "ILB-ASE-SUBNET" with prefix 10.0.0.0.24 and another subnet called "VM-SUBNET" with prefix 10.0.1.0/24<br>
