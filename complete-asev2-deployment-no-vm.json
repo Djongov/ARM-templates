@@ -67,6 +67,7 @@
     "newZoneName": "[concat(parameters('ASE Name'), '.appserviceenvironment.net')]",
     "newRecordName": "*",
     "newRecordName2": "*.scm",
+    "newRecordName3": "@",
     "vnetlinkname": "vnetlink"
   },
   "resources": [
@@ -129,6 +130,24 @@
     {
       "type": "Microsoft.Network/PrivateDnsZones/a",
       "name": "[concat(variables('newZoneName'), '/', variables('newRecordName'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('newZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('newZoneName'), '/', variables('newRecordName3'))]",
       "apiVersion": "2018-09-01",
       "location": "global",
       "dependsOn": [
