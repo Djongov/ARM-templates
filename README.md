@@ -44,7 +44,7 @@ This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, 
 This basically deploys the entire solution with minimal customization. In the end you will have a completely working and configured ILB ASEv2 environment.<br>
 This is a diagram of what will be deployed:<br>
 <img src="https://www.azuretechguy.com/images/App_Service/new_ase/ase-deployment-diagram-no-asp.png"></img><br>
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-no-customization.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
 ## Deploy a full ILB ASEv2 Environment - Full customization
 This is a premium grade template that will deploy a VNET, VM, Private DNS Zone, ILB App Service Environment V2 (appserviceenvironment.net), App Service Plan (Windows) and a Web app. This represents the entire solution. This version is fully customized which means that it will ask you to name your resouces. Good for production environments.<br>
@@ -64,7 +64,7 @@ Here is what is being deployed by the template:
 This basically deploys the entire solution with your own customization. In the end you will have a completely working and configured ILB ASEv2 environment. The only thing that you don't have control over is the address space of the VNET. If you want to change it, feel free to edit it out in the template, just don't forget to change the address space on the A records in the Private DNS Zone too.<br>
 This is a diagram of what will be deployed:<br>
 <img src="https://www.azuretechguy.com/images/App_Service/new_ase/ase-deployment-diagram.png"></img>
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment-customized.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-customized.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
 ## Deploy a full ILB ASEv2 Environment - No VM
 This is a premium grade template that will deploy a VNET, ILB ASE, Private DNS Zone with needed records, App Service Plan (Windows) and a Web App. Customizable names for all of these resources. The only thing that's not customizable is the VNET address range. If you want to change it, edit it in the template. <br>Here is what is being deployed by the template:<br>
@@ -78,5 +78,5 @@ This is a premium grade template that will deploy a VNET, ILB ASE, Private DNS Z
 - A Web App hosted in this App Service Plan<br><br>
 This template is good if you don't need a VM to be deployed. Suitable for production environments.
 <img src="https://www.azuretechguy.com/images/App_Service/new_ase/ase-deployment-diagram-no-vm.png"></img>
-<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment-no-vm.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
+<a href="https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-no-VM.json" target="_blank"><img src="https://azuredeploy.net/deploybutton.png"/>
 </a><br>
