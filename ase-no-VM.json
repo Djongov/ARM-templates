@@ -1,0 +1,287 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "VNET Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name your VNET"
+      }
+    },
+    "ASE Subnet Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name the subnet where the ASE will be deployed"
+      }
+    },
+    "ASE Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name of your App Service Environment. It will be important for the ASE domain (asename.appserviceenvironment.net)"
+      }
+    },
+    "App Service Plan Name": {
+      "type": "string",
+      "minLength": 3,
+      "metadata": {
+        "description": "Name of your App Service plan that will be deployed to the ASE"
+      }
+    },
+    "App Service Plan Tier": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Defines the pricing tier: 1 = Isolated 1 (I1), 2 = Isolated 2 (I2), 3 = Isolated 3 (I3)."
+      },
+      "allowedValues": [
+        "1",
+        "2",
+        "3"
+      ],
+      "defaultValue": "1"
+    },
+    "App Service Capacity": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Shows how many instances of this App Service plan you want. Scale out workers"
+      }
+    },
+    "Wep App Name": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Name of your Web App that will be created under your App Service Plan in the ASE"
+      }
+    }
+  },
+  "variables": {
+    "VNET Address space": "10.0.0.0/16",
+    "ASE Subnet Address range": "10.0.0.0/24",
+    "VMVnetID": "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]",
+    "ASESubnetRef": "[concat(variables('VMVnetID'), '/subnets/', parameters('ASE Subnet Name'))]",
+    "ilbMode": "3",
+    "RootZoneName": "[concat(parameters('ASE Name'), '.appserviceenvironment.net')]",
+    "aRecordOne": "*",
+    "aRecordOne2": "@",
+    "RootZoneVNetLinkName": "root-zone-vnetlink",
+    "ScmZoneName": "[concat(parameters('ASE Name'), '.scm.appserviceenvironment.net')]",
+    "aRecordScm": "*",
+    "aRecordScm2": "@",
+    "ScmZoneVNetLinkName": "scm-zone-vnetlink"
+  },
+  "resources": [
+    {
+      "name": "[parameters('VNET Name')]",
+      "type": "Microsoft.Network/virtualNetworks",
+      "location": "[resourceGroup().location]",
+      "apiVersion": "2016-03-30",
+      "dependsOn": [],
+      "tags": {
+        "displayName": "ILB ASE LAB"
+      },
+      "properties": {
+        "addressSpace": {
+          "addressPrefixes": [
+            "[variables('VNET Address space')]"
+          ]
+        },
+        "subnets": [
+          {
+            "name": "[parameters('ASE Subnet Name')]",
+            "properties": {
+              "addressPrefix": "[variables('ASE Subnet Address range')]"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "apiVersion": "2019-02-01",
+      "type": "Microsoft.Web/hostingEnvironments",
+      "name": "[parameters('ASE Name')]",
+      "kind": "ASEV2",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+       "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]"
+      ],
+      "properties": {
+        "name": "[parameters('ASE Name')]",
+        "location": "[resourceGroup().location]",
+        "InternalLoadBalancingMode": "[variables('ilbMode')]",
+        "virtualNetwork": {
+          "Id": "[variables('ASESubnetRef')]"
+        }
+      },
+      "tags": {
+        "displayName": "ILB ASE Environment"
+      }
+    },
+        {
+      "type": "Microsoft.Network/PrivateDnsZones",
+      "name": "[variables('RootZoneName')]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+       "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('RootZoneName'), '/', variables('aRecordOne'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('RootZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('RootZoneName'), '/', variables('aRecordOne2'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('RootZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "name": "[concat(variables('RootZoneName'), '/', variables('RootZoneVNetLinkName'))]",
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2018-09-01",
+      "tags": {},
+      "location": "global",
+      "dependsOn": [
+        "[variables('RootZoneName')]"
+      ],
+      "properties": {
+        "virtualNetwork": {
+          "id": "[variables('VMVnetID')]"
+        },
+        "registrationEnabled": "false"
+      }
+    },
+        {
+      "type": "Microsoft.Network/PrivateDnsZones",
+      "name": "[variables('ScmZoneName')]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+       "[resourceId('Microsoft.Network/virtualNetworks', parameters('VNET Name'))]"
+      ],
+      "properties": {}
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('ScmZoneName'), '/', variables('aRecordScm'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('ScmZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "type": "Microsoft.Network/PrivateDnsZones/a",
+      "name": "[concat(variables('ScmZoneName'), '/', variables('aRecordScm2'))]",
+      "apiVersion": "2018-09-01",
+      "location": "global",
+      "dependsOn": [
+        "[variables('ScmZoneName')]"
+      ],
+      "properties": {
+        "metadata": {},
+        "ttl": "3600",
+        "aRecords": [
+          {
+            "ipv4Address": "10.0.0.11"
+          }
+        ]
+      }
+    },
+    {
+      "name": "[concat(variables('ScmZoneName'), '/', variables('ScmZoneVNetLinkName'))]",
+      "type": "Microsoft.Network/privateDnsZones/virtualNetworkLinks",
+      "apiVersion": "2018-09-01",
+      "tags": {},
+      "location": "global",
+      "dependsOn": [
+        "[variables('ScmZoneName')]"
+      ],
+      "properties": {
+        "virtualNetwork": {
+          "id": "[variables('VMVnetID')]"
+        },
+        "registrationEnabled": "false"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('App Service Plan Name')]",
+      "type": "Microsoft.Web/serverfarms",
+      "location": "[resourceGroup().location]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/hostingEnvironments',parameters('ASE Name'))]"
+      ],
+      "properties": {
+        "name": "[parameters('App Service Plan Name')]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments',parameters('ASE Name'))]"
+        }
+      },
+      "sku": {
+        "name": "[concat('I',parameters('App Service Plan Tier'))]",
+        "tier": "Isolated",
+        "size": "[concat('I',parameters('App Service Plan Tier'))]",
+        "family": "I",
+        "capacity": "[parameters('App Service Capacity')]"
+      }
+    },
+    {
+      "apiVersion": "2015-08-01",
+      "name": "[parameters('Wep App Name')]",
+      "type": "Microsoft.Web/sites",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "name": "[parameters('Wep App Name')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverFarms',parameters('App Service Plan Name'))]",
+        "hostingEnvironmentProfile": {
+          "id": "[resourceId('Microsoft.Web/hostingEnvironments', parameters('ASE Name'))]"
+        }
+      },
+      "dependsOn": [
+        "[concat('Microsoft.Web/serverFarms/',parameters('App Service Plan Name'))]"
+      ]
+    }
+  ],
+  "outputs": {}
+}
