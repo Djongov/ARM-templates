@@ -1,0 +1,20 @@
+repo_name: Djongov/ARM-templates
+report_id: cc0086648df0d474d055534badb4be87
+version: 0.1
+repo_type: Public
+timestamp: '2024-03-14T15:35:51+00:00'
+requested_by: Djongov
+provider: github
+branch: master
+detected_tools_count: 1
+tools:
+- name: Git
+  description: Fast, scalable, distributed revision control system
+  website_url: http://git-scm.com/
+  open_source: true
+  hosted_saas: false
+  category: Build, Test, Deploy
+  sub_category: Version Control System
+  image_url: https://img.stackshare.io/service/1046/git.png
+  detection_source_url: https://github.com/Djongov/ARM-templates
+  detection_source: Repo Metadata
