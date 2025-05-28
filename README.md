@@ -126,3 +126,19 @@ Deploy Private DNS Zone
 https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/privatednszone.json
 ```
 
+---
+
+## API Connection via Service Principal and managed API
+
+This ARM template deploys an Azure Logic Apps API connection that authenticates using a Service Principal. It targets a specific managed API by ID, enabling automated workflows or applications to securely access Azure or third-party services.
+
+[![Deploy to Azure](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/deploytoazure.svg?sanitize=true)](https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fapi-connection-service-principal.json)
+
+[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fapi-connection-service-principal.json)
+
+**Or copy this URL and paste it in the Azure portal:**
+
+```plaintext
+https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/api-connection-service-principal.json
+```
+
