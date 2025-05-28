@@ -45,7 +45,7 @@
   "resources": [
     {
       "type": "Microsoft.Web/connections",
-      "apiVersion": "2018-07-01-preview",
+      "apiVersion": "2016-06-01",
       "name": "[parameters('connectionName')]",
       "location": "[resourceGroup().location]",
       "tags": {
@@ -54,9 +54,9 @@
       "properties": {
         "displayName": "[parameters('connectionName')]",
         "parameterValues": {
-          "token:clientId": "[parameters('clientId')]",
-          "token:clientSecret": "[parameters('clientSecret')]",
-          "token:TenantId": "[parameters('tenantId')]",
+          "clientId": "[parameters('clientId')]",
+          "clientSecret": "[parameters('clientSecret')]",
+          "tenantId": "[parameters('tenantId')]",
           "grantType" : "client_credentials",
           "resourceUri" : "[parameters('resourceUri')]"
         },
