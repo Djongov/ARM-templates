@@ -43,8 +43,8 @@
   },
   "variables": {
     // Let's builld the apiIdName variable
-    "apiIdName": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/', parameters('apiIdName'))]"
-  },
+    "apiIdName": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/', parameters('apiIdName'))]"
+},
   "resources": [
     {
       "type": "Microsoft.Web/connections",
