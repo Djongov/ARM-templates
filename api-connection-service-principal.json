@@ -1,5 +1,5 @@
 {
-  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
     "connectionName": {
@@ -15,13 +15,13 @@
         "description": "The ID of the API to which the connection will be made. Example value: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/locations/{location}/managedApis/{apiName}'"
       }
     },
-    "servicePrincipalId": {
+    "clientId": {
       "type": "string",
       "metadata": {
         "description": "The ID of the service principal to be used for the API connection."
       }
     },
-    "servicePrincipalSecret": {
+    "clientSecret": {
       "type": "securestring",
       "metadata": {
         "description": "The secret of the service principal to be used for the API connection."
@@ -45,7 +45,7 @@
   "resources": [
     {
       "type": "Microsoft.Web/connections",
-      "apiVersion": "2016-06-01",
+      "apiVersion": "2018-07-01-preview",
       "name": "[parameters('connectionName')]",
       "location": "[resourceGroup().location]",
       "tags": {
@@ -54,9 +54,9 @@
       "properties": {
         "displayName": "[parameters('connectionName')]",
         "parameterValues": {
-          "servicePrincipalId": "[parameters('servicePrincipalId')]",
-          "servicePrincipalSecret": "[parameters('servicePrincipalSecret')]",
-          "tenantId": "[parameters('tenantId')]",
+          "token:clientId": "[parameters('clientId')]",
+          "token:clientSecret": "[parameters('clientSecret')]",
+          "token:TenantId": "[parameters('tenantId')]",
           "grantType" : "client_credentials",
           "resourceUri" : "[parameters('resourceUri')]"
         },
