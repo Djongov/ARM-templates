@@ -41,9 +41,7 @@
       }
     }
   },
-  "variables": {
-    "apiIdName": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/', parameters('apiIdName'))]"
-    },
+  "variables": {},
   "resources": [
     {
       "type": "Microsoft.Web/connections",
@@ -63,7 +61,7 @@
           "resourceUri" : "[parameters('resourceUri')]"
         },
         "api": {
-          "id": "[variables('apiIdName')]"
+            "id": "[concat(subscription().id, '/providers/Microsoft.Web/locations/', resourceGroup().location, '/managedApis/', parameters('apiIdName'))]"
         }
       }
     }
