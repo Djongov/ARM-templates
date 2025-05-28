@@ -27,10 +27,6 @@ templates:
     description: "Complete ASEv2 deployment"
     file: complete-asev2-deployment.json
 
-  - title: "Deploy Joomla Web App with MySQL In-App (joomla-webapp-mysqlinapp)"
-    description: "Deploy Joomla Web App with MySQL in App"
-    file: joomla-webapp-mysqlinapp.json
-
   - title: "Deploy Private DNS Zone (privatednszone)"
     description: "Deploy Private DNS Zone"
     file: privatednszone.json
