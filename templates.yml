@@ -1,0 +1,36 @@
+templates:
+  - title: "Deploy Prerequisites for ILB ASEv2 and Test VM (ase-base-resources-lab)"
+    description: "Deploys prerequisites for an ILB ASEv2 and a test VM"
+    file: ase-base-resources-lab.json
+
+  - title: "Full Customization of ILB ASEv2 Environment (ase-customized)"
+    description: "Deploy a full ILB ASEv2 environment – Full Customization"
+    file: ase-customized.json
+
+  - title: "Deploy ILB ASEv2 Without VM (ase-no-VM)"
+    description: "Deploy ILB ASEv2 without a VM"
+    file: ase-no-VM.json
+
+  - title: "Minimal Customization Full ILB ASEv2 Environment (ase-no-customization)"
+    description: "Deploy a Full ILB ASEv2 Environment – Minimal Customization"
+    file: ase-no-customization.json
+
+  - title: "Complete ASEv2 Deployment with Full Customization (complete-asev2-deployment-customized)"
+    description: "Complete ASEv2 deployment with full customization"
+    file: complete-asev2-deployment-customized.json
+
+  - title: "Complete ASEv2 Deployment Without VM (complete-asev2-deployment-no-vm)"
+    description: "Complete ASEv2 deployment without VM"
+    file: complete-asev2-deployment-no-vm.json
+
+  - title: "Complete ASEv2 Deployment (complete-asev2-deployment)"
+    description: "Complete ASEv2 deployment"
+    file: complete-asev2-deployment.json
+
+  - title: "Deploy Joomla Web App with MySQL In-App (joomla-webapp-mysqlinapp)"
+    description: "Deploy Joomla Web App with MySQL in App"
+    file: joomla-webapp-mysqlinapp.json
+
+  - title: "Deploy Private DNS Zone (privatednszone)"
+    description: "Deploy Private DNS Zone"
+    file: privatednszone.json

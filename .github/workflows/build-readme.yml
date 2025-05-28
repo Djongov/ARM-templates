@@ -1,0 +1,27 @@
+name: Build README
+
+on:
+  push:
+    paths:
+      - "templates.yml"
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+
+      - name: Generate README.md
+        run: node build-readme.js
+
+      - name: Commit and push README.md
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: "Auto-generate README.md"
+          file_pattern: README.md
