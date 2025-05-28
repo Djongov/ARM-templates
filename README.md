@@ -11,7 +11,7 @@ Deploys prerequisites for an ILB ASEv2 and a test VM
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/ase-base-resources-lab.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-base-resources-lab.json
 ```
 
 ---
@@ -27,7 +27,7 @@ Deploy a full ILB ASEv2 environment – Full Customization
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/ase-customized.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-customized.json
 ```
 
 ---
@@ -43,7 +43,7 @@ Deploy ILB ASEv2 without a VM
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/ase-no-VM.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-no-VM.json
 ```
 
 ---
@@ -59,7 +59,7 @@ Deploy a Full ILB ASEv2 Environment – Minimal Customization
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/ase-no-customization.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fase-no-customization.json
 ```
 
 ---
@@ -75,7 +75,7 @@ Complete ASEv2 deployment with full customization
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/complete-asev2-deployment-customized.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment-customized.json
 ```
 
 ---
@@ -91,7 +91,7 @@ Complete ASEv2 deployment without VM
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/complete-asev2-deployment-no-vm.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment-no-vm.json
 ```
 
 ---
@@ -107,7 +107,7 @@ Complete ASEv2 deployment
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/complete-asev2-deployment.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fcomplete-asev2-deployment.json
 ```
 
 ---
@@ -123,7 +123,7 @@ Deploy Private DNS Zone
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/privatednszone.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fprivatednszone.json
 ```
 
 ---
@@ -139,6 +139,6 @@ This ARM template deploys an Azure Logic Apps API connection that authenticates 
 **Or copy this URL and paste it in the Azure portal:**
 
 ```plaintext
-https://portal.azure.com/#create/Microsoft.Template/uri/https://raw.githubusercontent.com/Djongov/ARM-templates/master/api-connection-service-principal.json
+https://portal.azure.com/#create/Microsoft.Template/uri/https%3A%2F%2Fraw.githubusercontent.com%2FDjongov%2FARM-templates%2Fmaster%2Fapi-connection-service-principal.json
 ```
 
