@@ -3,8 +3,8 @@ name: Build README
 on:
   push:
     paths:
-      - "templates.yml"
-      - "build-readme.js"
+      - "data/templates.yml"
+      - "data/build-readme.js"
 
 jobs:
   build:
@@ -22,7 +22,7 @@ jobs:
         run: npm install js-yaml
 
       - name: Run build script
-        run: node build-readme.js
+        run: node data/build-readme.js
 
       - name: Commit README.md
         uses: stefanzweifel/git-auto-commit-action@v4

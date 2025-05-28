@@ -1,7 +1,8 @@
 const fs = require('fs');
 const yaml = require('js-yaml');
 
-const templatesFile = yaml.load(fs.readFileSync('templates.yml', 'utf8'));
+const templatesFile = yaml.load(fs.readFileSync(__dirname + '/templates.yml', 'utf8'));
+
 const templates = templatesFile.templates;  // <-- important!
 
 let readme = '# Azure ARM Templates\n\n';
@@ -15,7 +16,7 @@ templates.forEach(({title, description, file}, i) => {
   readme += `[![Visualize](https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/1-CONTRIBUTION-GUIDE/images/visualizebutton.svg?sanitize=true)](http://armviz.io/#/?load=${encodeURIComponent(baseUrl)})\n\n`;
   readme += `**Or copy this URL and paste it in the Azure portal:**\n\n`;
   readme += '```plaintext\n';
-  readme += `https://portal.azure.com/#create/Microsoft.Template/uri/${baseUrl}\n`;
+  readme += `https://portal.azure.com/#create/Microsoft.Template/uri/${encodeURIComponent(baseUrl)}\n`;
   readme += '```\n\n';
   if (i < templates.length - 1) {
     readme += '---\n\n';

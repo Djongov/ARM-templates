@@ -10,6 +10,7 @@
     },
     "apiIdName": {
       "type": "string",
+      "defaultValue": "teams",
       "metadata": {
         "description": "The ID of the API to which the connection will be made. Example value: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/locations/{location}/managedApis/{apiName}'"
       }
@@ -31,6 +32,13 @@
       "metadata": {
         "description": "The tenant ID for the service principal."
       }
+    },
+    "resourceUri": {
+      "type": "string",
+      "defaultValue": "https://graph.microsoft.com/",
+      "metadata": {
+        "description": "The resource URI for the API connection. Default is 'https://graph.microsoft.com/'. Other common values include 'https://management.azure.com/' or 'https://vault.azure.net/'."
+      }
     }
   },
   "variables": {
@@ -51,7 +59,9 @@
         "parameterValues": {
           "servicePrincipalId": "[parameters('servicePrincipalId')]",
           "servicePrincipalSecret": "[parameters('servicePrincipalSecret')]",
-          "tenantId": "[parameters('tenantId')]"
+          "tenantId": "[parameters('tenantId')]",
+          "grantType" : "client_credentials",
+          "resourceUri" : "[parameters('resourceUri')]"
         },
         "api": {
           "id": "[variables('apiIdName')]"
