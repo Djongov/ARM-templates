@@ -30,3 +30,7 @@ templates:
   - title: "Deploy Private DNS Zone (privatednszone)"
     description: "Deploy Private DNS Zone"
     file: privatednszone.json
+
+  - title: "API Connection via Service Principal and managed API"
+    description: "This ARM template deploys an Azure Logic Apps API connection that authenticates using a Service Principal. It targets a specific managed API by ID, enabling automated workflows or applications to securely access Azure or third-party services."
+    file: api-connection-service-principal.json
