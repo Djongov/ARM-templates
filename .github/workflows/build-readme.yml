@@ -4,11 +4,12 @@ on:
   push:
     paths:
       - "templates.yml"
-  workflow_dispatch:
+      - "build-readme.js"
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - uses: actions/checkout@v3
 
@@ -17,11 +18,14 @@ jobs:
         with:
           node-version: "18"
 
-      - name: Generate README.md
+      - name: Install dependencies
+        run: npm install js-yaml
+
+      - name: Run build script
         run: node build-readme.js
 
-      - name: Commit and push README.md
+      - name: Commit README.md
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: "Auto-generate README.md"
+          commit_message: Update README.md from templates.yml
           file_pattern: README.md
